@@ -1,108 +1,51 @@
-import React from 'react';
-
+import React,{ Component } from 'react';
 import { MdAddShoppingCart } from 'react-icons/md';
+import { formatPrice } from '../../util/format';
+import api from '../../services/api';
+
 import { ProductList } from './styles';
 
-export default function Home() {
-  return (
-    <ProductList>
-      <li>
-        <img src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone8-spgray-select-2018?wid=940&hei=1112&fmt=png-alpha&qlt=80&.v=1550795417557" alt="item"/>
-        <strong> Tênis muito legal </strong>
-        <span>R$129,90</span>
+export default class Home extends Component {
+  state={
+    products: [],
+  };
 
-        <button type="button">
-          <div>
-            <MdAddShoppingCart size={16} color="#FFF" /> 3
-          </div>
+  async componentDidMount(){
+    const response = await api.get('products');
 
-          <span>Adicionar ao carrinho</span>
-        </button>
-      </li>
-      
-      <li>
-        <img src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone8-spgray-select-2018?wid=940&hei=1112&fmt=png-alpha&qlt=80&.v=1550795417557" alt="item"/>
-        <strong> Tênis muito legal </strong>
-        <span>R$129,90</span>
+    const data = response.data.map(product => ({
+      ... product,
+      priceFormatted: formatPrice(product.price)
+    }));
 
-        <button type="button">
-          <div>
-            <MdAddShoppingCart size={16} color="#FFF" /> 3
-          </div>
+    this.setState({
+      products: data
+    });
+  }
 
-          <span>Adicionar ao carrinho</span>
-        </button>
-      </li>
+  render(){
+    const { products } = this.state;
 
-      <li>
-        <img src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone8-spgray-select-2018?wid=940&hei=1112&fmt=png-alpha&qlt=80&.v=1550795417557" alt="item"/>
-        <strong> Tênis muito legal </strong>
-        <span>R$129,90</span>
+    return (
+      <ProductList>
+        { products.map(product => (
 
-        <button type="button">
-          <div>
-            <MdAddShoppingCart size={16} color="#FFF" /> 3
-          </div>
+          <li key={product.id}>
+            <img src={product.image} alt={product.title}/>
+            <strong> {product.title} </strong>
+            <span>{product.priceFormatted}</span>
 
-          <span>Adicionar ao carrinho</span>
-        </button>
-      </li>
+            <button type="button">
+              <div>
+                <MdAddShoppingCart size={16} color="#FFF" /> 3
+              </div>
 
-      <li>
-        <img src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone8-spgray-select-2018?wid=940&hei=1112&fmt=png-alpha&qlt=80&.v=1550795417557" alt="item"/>
-        <strong> Tênis muito legal </strong>
-        <span>R$129,90</span>
+              <span>Adicionar ao carrinho</span>
+            </button>
 
-        <button type="button">
-          <div>
-            <MdAddShoppingCart size={16} color="#FFF" /> 3
-          </div>
-
-          <span>Adicionar ao carrinho</span>
-        </button>
-      </li>
-
-      <li>
-        <img src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone8-spgray-select-2018?wid=940&hei=1112&fmt=png-alpha&qlt=80&.v=1550795417557" alt="item"/>
-        <strong> Tênis muito legal </strong>
-        <span>R$129,90</span>
-
-        <button type="button">
-          <div>
-            <MdAddShoppingCart size={16} color="#FFF" /> 3
-          </div>
-
-          <span>Adicionar ao carrinho</span>
-        </button>
-      </li>
-
-      <li>
-        <img src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone8-spgray-select-2018?wid=940&hei=1112&fmt=png-alpha&qlt=80&.v=1550795417557" alt="item"/>
-        <strong> Tênis muito legal </strong>
-        <span>R$129,90</span>
-
-        <button type="button">
-          <div>
-            <MdAddShoppingCart size={16} color="#FFF" /> 3
-          </div>
-
-          <span>Adicionar ao carrinho</span>
-        </button>
-      </li>
-
-      <li>
-        <img src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone8-spgray-select-2018?wid=940&hei=1112&fmt=png-alpha&qlt=80&.v=1550795417557" alt="item"/>
-        <strong> Tênis muito legal </strong>
-        <span>R$129,90</span>
-
-        <button type="button">
-          <div>
-            <MdAddShoppingCart size={16} color="#FFF" /> 3
-          </div>
-
-          <span>Adicionar ao carrinho</span>
-        </button>
-      </li>
-    </ProductList>
-  );
+          </li>
+        )) }
+      </ProductList>
+    );
+  }
 }
