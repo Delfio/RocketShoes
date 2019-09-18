@@ -27,10 +27,10 @@ class Home extends Component {
     });
   }
 
-  handleAddProduct = product =>{
-    const { addToCart } = this.props;
+  handleAddProduct = id =>{
+    const { addToCartRequest } = this.props;
 
-    addToCart(product); //Action de adicionar ao carrinho
+    addToCartRequest(id); //Action de adicionar ao carrinho
   }
 
   render(){
@@ -46,7 +46,7 @@ class Home extends Component {
             <strong> {product.title} </strong>
             <span>{product.priceFormatted}</span>
 
-            <button type="button" onClick={() => this.handleAddProduct(product)}>
+            <button type="button" onClick={() => this.handleAddProduct(product.id)}>
               <div>
                 <MdAddShoppingCart size={16} color="#FFF" />{' '} {amount[product.id] || 0}
               </div>
